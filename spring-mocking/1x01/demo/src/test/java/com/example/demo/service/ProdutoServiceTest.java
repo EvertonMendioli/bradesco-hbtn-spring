@@ -6,53 +6,50 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 
 import java.util.Optional;
 
-
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class ProdutoServiceTest {
 
+  @Mock
+  private ProdutoRepository produtoRepository;
 
-    @Mock
-    private ProdutoRepository produtoRepository;
+  @InjectMocks
+  private ProdutoService produtoService;
 
+  @Test
+  void deveRetornarProdutoQuandoIdExistir() {
+    Produto prd = new Produto();
+    prd.setId(1L);
+    prd.setNome("teste");
+    prd.setPreco(4.2);
 
-    @InjectMocks
-    private ProdutoService produtoService;
+    when(produtoRepository.findById(1L)).thenReturn(Optional.of(prd));
 
+    Produto resultado = produtoService.buscarPorId(1L);
 
-    @Test
-    void deveRetornarProdutoQuandoIdExistir() {
-      Produto prd = new Produto();
-      prd.setId(1);
-      prd.setNome("teste");
-      prd.setPreco(4.2);
+    assertNotNull(resultado);
+    assertEquals(prd.getId(), resultado.getId());
+    assertEquals(prd.getNome(), resultado.getNome());
+    assertEquals(prd.getPreco(), resultado.getPreco());
 
-      when(produtoRepository.findById(Mockito.anyLong()));
+  }
 
-      //assertEquals(prd, teste);
+  @Test
+  void deveLancarExcecaoQuandoProdutoNaoExistir() {
 
-    }
+    when(produtoRepository.findById(1L)).thenThrow(new RuntimeException("Produto não encontrado"));
 
+    RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+      produtoService.buscarPorId(1L);
+    });
 
-    @Test
-    void deveLancarExcecaoQuandoProdutoNaoExistir() {
-      Produto prd = new Produto();
-      prd.setId(2);
-      prd.setNome("teste");
-      prd.setPreco(4.2);
+    assertEquals("Produto não encontrado", exception.getMessage());
 
-      //Produto teste = produtoService.buscarPorId(1);
-            when(produtoRepository.findById(Mockito.anyLong())).thenThrow(new RuntimeException("Produto não encontrado"));
-
-
-      //assertEquals(prd, teste);
-    }
+  }
 }
