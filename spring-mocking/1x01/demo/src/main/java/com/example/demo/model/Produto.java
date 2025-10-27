@@ -20,10 +20,20 @@ public class Produto {
         this.preco = preco;
     }
 
-    public Produto(Long id, String nome, double preco) {
+    public setId(Long id){
         this.id = id;
+    }
+
+    public setNome(String nome){
         this.nome = nome;
+    }
+
+    public setPreco(double preco){
         this.preco = preco;
     }
+
+    public Long getId() { return id; }
+    public String getNome() { return nome; }
+    public double getPreco() { return preco; }
 
 }

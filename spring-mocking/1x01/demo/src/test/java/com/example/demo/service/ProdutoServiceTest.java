@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class ProdutoServiceTest {
 
@@ -30,12 +30,29 @@ class ProdutoServiceTest {
 
     @Test
     void deveRetornarProdutoQuandoIdExistir() {
-      // implemente
+      Produto prd = new Produto();
+      prd.setId(1);
+      prd.setNome("teste");
+      prd.setPreco(4.2);
+
+      when(produtoRepository.findById(Mockito.anyLong()));
+
+      //assertEquals(prd, teste);
+
     }
 
 
     @Test
     void deveLancarExcecaoQuandoProdutoNaoExistir() {
-      // implemente
+      Produto prd = new Produto();
+      prd.setId(2);
+      prd.setNome("teste");
+      prd.setPreco(4.2);
+
+      //Produto teste = produtoService.buscarPorId(1);
+            when(produtoRepository.findById(Mockito.anyLong())).thenThrow(new RuntimeException("Produto não encontrado"));
+
+
+      //assertEquals(prd, teste);
     }
 }
