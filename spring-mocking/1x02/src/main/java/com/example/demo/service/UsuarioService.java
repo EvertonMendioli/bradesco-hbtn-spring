@@ -1,27 +1,36 @@
-package main.java.com.example.demo.service;
+package com.example.demo.service;
+
 
 import java.util.Optional;
 
-import com.example.demo.model.Usuario;
-import com.example.demo.repository.ProdutoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import main.java.com.example.demo.repository.UsuarioRepository;
+import com.example.demo.model.Usuario;
+import com.example.demo.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
 
-        private final UsuarioRepository usuarioRepository;
+        
+    private final UsuarioRepository usuarioRepository;
 
-            
+    @Autowired
+    public UsuarioService(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }         
 
 
-    public Produto buscarUsuarioPorId(Long id) {
+    public Usuario buscarUsuarioPorId(Long id) throws RuntimeException{
+        
+     
+        
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
     public Usuario salvarUsuario(Usuario usuario){
-        return usuarioRepository.save(usuario);
+            return usuarioRepository.save(usuario);
     }
 
 
